@@ -1,0 +1,104 @@
+body {
+  font-family: sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+}
+
+header h1 {
+  text-align: center;
+  color: #333;
+}
+
+.menu {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.menu button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+}
+
+.todo-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.todo-form input[type="text"],
+.todo-form select {
+  flex: 1 1 45%;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+
+.todo-form button {
+  flex: 1 1 100%;
+  padding: 10px;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.todo-list {
+  list-style: none;
+  padding: 0;
+}
+
+.todo-list li {
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.task-text {
+  font-size: 1.1em;
+}
+
+.task-text.completed {
+  text-decoration: line-through;
+  color: #888;
+}
+
+.category-label {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.note-text {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 4px;
+}
+
+.priority-label {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #d00;
+  margin-top: 2px;
+}
+
+.edit-btn,
+.delete-btn {
+  margin-top: 8px;
+  padding: 6px 12px;
+  background-color: #eee;
+  border: none;
+  cursor: pointer;
+}

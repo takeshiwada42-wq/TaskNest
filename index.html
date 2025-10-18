@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Todoアプリ</title>
+</head>
+<body>
+<h1>タスク一覧</h1>
+
+<form action="/search" method="get">
+    <input type="text" name="keyword" placeholder="検索キーワード"
+           th:value="${keyword}">
+
+    <select name="sortKey">
+        <option value="dueDate" th:selected="${sortKey=='dueDate'}">期限順</option>
+        <option value="priority" th:selected="${sortKey=='priority'}">優先度順</option>
+        <option value="title" th:selected="${sortKey=='title'}">タイトル順</option>
+        <option value="dueDateThenPriority" th:selected="${sortKey=='dueDateThenPriority'}">期限⇒優先度順</option>
+    </select>
+
+    <label><input type="radio" name="status" value="" th:checked="${status==null or status==''}">すべて</label>
+    <label><input type="radio" name="status" value="TODO" th:checked="${status=='TODO'}">TODO</label>
+    <label><input type="radio" name="status" value="DONE" th:checked="${status=='DONE'}">DONE</label>
+
+    <button type="submit">検索</button>
+</form>
+
+<hr>
+
+<h2>🚀 新規タスクの作成</h2>
+<form action="/create" method="post">
+    <label for="title">タイトル:</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="description">詳細:</label>
+    <input type="text" id="description" name="description"><br><br>
+
+    <label for="dueDate">期限:</label>
+    <input type="date" id="dueDate" name="dueDate"><br><br>
+
+    <label for="priority">優先度:</label>
+    <select id="priority" name="priority">
+        <option value="LOW">低 (LOW)</option>
+        <option value="MEDIUM">中 (MEDIUM)</option>
+        <option value="HIGH">高 (HIGH)</option>
+    </select><br><br>
+
+    <button type="submit">タスクを追加</button>
+</form>
+
+<hr>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>タイトル</th>
+        <th>期限</th>
+        <th>状態</th>
+        <th>優先度</th>
+    </tr>
+    <tr th:each="task : ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.dueDate}"></td>
+        <td th:text="${task.status}"></td>
+        <td th:text="${task.priority}"></td>
+    </tr>
+</table>
+
+</body>
+</html>

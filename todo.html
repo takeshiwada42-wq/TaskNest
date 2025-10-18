@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ToDoリスト</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 2em;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 2em;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5em;
+            color: #2c3e50;
+        }
+
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            margin-bottom: 2em;
+        }
+
+        input[type="text"], select {
+            flex: 1 1 200px;
+            padding: 0.6em;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 0.6em 1.2em;
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.8em;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f2f5;
+            color: #555;
+        }
+
+        tr:hover {
+            background-color: #f9fbfc;
+        }
+
+        .priority-low {
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .priority-medium {
+            color: #f39c12;
+            font-weight: bold;
+        }
+
+        .priority-high {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .completed-text {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ToDoリスト</h1>
+
+        <!-- 登録フォーム -->
+        <form action="/add" method="post">
+            <input type="text" name="task" placeholder="タスク名" required />
+            <input type="text" name="category" placeholder="カテゴリ" />
+            <input type="text" name="note" placeholder="メモ" />
+            <select name="priority">
+                <option value="LOW">低</option>
+                <option value="MEDIUM">中</option>
+                <option value="HIGH">高</option>
+            </select>
+            <button type="submit">追加</button>
+        </form>
+
+        <!-- 一覧表示 -->
+        <table>
+            <thead>
+                <tr>
+                    <th>タスク名</th>
+                    <th>カテゴリ</th>
+                    <th>メモ</th>
+                    <th>優先度</th>
+                    <th>完了</th>
+                    <th>作成日時</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="task : ${tasks}">
+                    <td th:text="${task.name}"
+                        th:classappend="${task.completed} ? 'completed-text' : ''">タスク名</td>
+                    <td th:text="${task.category}">カテゴリ</td>
+                    <td th:text="${task.note}">メモ</td>
+                    <td th:classappend="'priority-' + ${task.priority.name().toLowerCase()}"
+                        th:text="${task.priority}">優先度</td>
+                    <td class="checkbox-cell">
+                        <input type="checkbox"
+                               th:checked="${task.completed}"
+                               th:onchange="updateTaskStatus([[${task.id}]], this.checked)" />
+                    </td>
+                    <td th:text="${#temporals.format(task.createdAt, 'yyyy-MM-dd HH:mm')}">作成日時</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function updateTaskStatus(id, completed) {
+            fetch(`/tasks/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed: completed })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    alert("更新に失敗しました");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
